@@ -1,5 +1,7 @@
 export default function cssHasPseudo(document) {
 	const observedItems = [];
+
+	// document.createAttribute() doesn't support `:` in the name. outerHTML does
 	const attributeElement = document.createElement('x');
 
 	// walk all stylesheets to collect observed css rules
@@ -53,9 +55,9 @@ export default function cssHasPseudo(document) {
 							nodes.push(element);
 
 							// set an attribute with an irregular attribute name
-							attributeElement.innerHTML = '<x ' + item.attributeName + '>';
+							attributeElement.outerHTML = '<x ' + item.attributeName + '>';
 
-							element.attributes.setNamedItem(attributeElement.firstChild.attributes[0].cloneNode());
+							element.setAttributeNode(attributeElement.attributes[0].cloneNode());
 
 							// trigger a style refresh in IE and Edge
 							document.documentElement.style.zoom = 1; document.documentElement.style.zoom = null;
