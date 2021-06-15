@@ -44,16 +44,15 @@ const creator = opts => {
 						});
 					}).processSync(rule.selector);
 
-					const clone = rule.clone({ selector: modifiedSelector });
+
 
 					if (preserve) {
+						const clone = rule.clone({ selector: modifiedSelector });
 						ops.push(() => {
 							rule.before(clone)
 						});
 					} else {
-						ops.push(() => {
-							rule.replaceWith(clone)
-						});
+						rule.assign({ selector: modifiedSelector });
 					}
 				},
 			};
