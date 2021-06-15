@@ -7,40 +7,56 @@ const creator = opts => {
 
 	return {
 		postcssPlugin: 'css-has-pseudo',
-		Once: root => {
-			root.walkRules(selectorRegExp, rule => {
-				const modifiedSelector = parser(selectors => {
-					selectors.walkPseudos(selector => {
-						if (selector.value === ':has' && selector.nodes) {
-							const isNotHas = checkIfParentIsNot(selector);
-							selector.value = isNotHas ? ':not-has' : ':has';
-
-							const attribute = parser.attribute({
-								attribute: encodeURIComponent(String(selector))
-								.replace(/%3A/g, ':')
-								.replace(/%5B/g, '[')
-								.replace(/%5D/g, ']')
-								.replace(/%2C/g, ',')
-								.replace(/[():%[\],]/g, '\\$&')
-							});
-
-							if (isNotHas) {
-								selector.parent.parent.replaceWith(attribute);
-							} else {
-								selector.replaceWith(attribute);
-							}
-						}
+		prepare() {
+			const ops = [];
+			return {
+				OnceExit: () => {
+					ops.forEach((op) => {
+						op();
 					});
-				}).processSync(rule.selector);
+				},
+				Rule: rule => {
+					if (!rule.selector || !selectorRegExp.test(rule.selector)) {
+						return;
+					}
 
-				const clone = rule.clone({ selector: modifiedSelector });
+					const modifiedSelector = parser(selectors => {
+						selectors.walkPseudos(selector => {
+							if (selector.value === ':has' && selector.nodes) {
+								const isNotHas = checkIfParentIsNot(selector);
+								selector.value = isNotHas ? ':not-has' : ':has';
 
-				if (preserve) {
-					rule.before(clone);
-				} else {
-					rule.replaceWith(clone);
-				}
-			});
+								const attribute = parser.attribute({
+									attribute: encodeURIComponent(String(selector))
+									.replace(/%3A/g, ':')
+									.replace(/%5B/g, '[')
+									.replace(/%5D/g, ']')
+									.replace(/%2C/g, ',')
+									.replace(/[():%[\],]/g, '\\$&')
+								});
+
+								if (isNotHas) {
+									selector.parent.parent.replaceWith(attribute);
+								} else {
+									selector.replaceWith(attribute);
+								}
+							}
+						});
+					}).processSync(rule.selector);
+
+					const clone = rule.clone({ selector: modifiedSelector });
+
+					if (preserve) {
+						ops.push(() => {
+							rule.before(clone)
+						});
+					} else {
+						ops.push(() => {
+							rule.replaceWith(clone)
+						});
+					}
+				},
+			};
 		},
 	};
 };
