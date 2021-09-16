@@ -13,3 +13,4 @@ yarn.lock
 !.rollup.js
 !.tape.js
 !.travis.yml
+!.github
