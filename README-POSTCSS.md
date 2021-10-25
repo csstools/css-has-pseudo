@@ -90,5 +90,6 @@ body[\:has\(\:focus\)] {
 [npm-img]: https://img.shields.io/npm/v/css-has-pseudo.svg
 [npm-url]: https://www.npmjs.com/package/css-has-pseudo
 
+[PostCSS]: https://github.com/postcss/postcss
 [CSS Has Pseudo]: https://github.com/csstools/css-has-pseudo
 [Selectors Level 4]: https://drafts.csswg.org/selectors-4/#has-pseudo
