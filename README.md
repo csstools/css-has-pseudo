@@ -39,7 +39,7 @@ Next, use your transformed CSS with this script:
 
 ```html
 <link rel="stylesheet" href="TRANSFORMED.css">
-<script src="https://unpkg.com/css-has-pseudo/browser"></script>
+<script src="https://unpkg.com/css-has-pseudo"></script>
 <script>cssHasPseudo(document)</script>
 ```
 
