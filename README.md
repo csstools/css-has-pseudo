@@ -4,6 +4,11 @@
 [![Build Status][cli-img]][cli-url]
 [![Support Chat][git-img]][git-url]
 
+⚠️ CSS Has Pseudo was moved to [@csstools/postcss-plugins](https://github.com/csstools/postcss-plugins/tree/main/plugins/css-has-pseudo). ⚠️<br>
+[Read the announcement](https://github.com/csstools/postcss-plugins/discussions/75)
+  
+----------------
+
 [CSS Has Pseudo] lets you style elements relative to other elements in CSS,
 following the [Selectors Level 4] specification.
 
